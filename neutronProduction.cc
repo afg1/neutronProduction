@@ -17,6 +17,8 @@
 #include "G4UItcsh.hh"
 #endif
 
+#include "G4ScoringManager.hh"
+
 
 #include "World.hh"
 #include "Physics.hh"
@@ -65,6 +67,9 @@ int main(int argc, char** argv)
     G4VUserPrimaryGeneratorAction* gen = new Generator;
     runManager->SetUserAction(gen);
     #endif
+    
+    // Activate command based scorer
+    G4ScoringManager::GetScoringManager();
     
     #ifdef G4UI_USE
     G4UIsession* ui = new G4UIterminal(new G4UItcsh);
