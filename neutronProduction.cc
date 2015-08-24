@@ -79,13 +79,18 @@ int main(int argc, char** argv)
         return -2;
     }
     #endif
+    std::string macro;
+    if(argc > 1)
+    {
+        macro = std::string(argv[1]);
+    }
     
     #ifdef G4VIS_USE
     G4VisManager* visMan = new G4VisExecutive;
     visMan->Initialise();
     #endif
 
-//    UI->ExecuteMacroFile(macname.c_str()); // Uncomment and implement if desired
+    UI->ExecuteMacroFile(macro.c_str()); // Uncomment and implement if desired
    
 	G4RegionStore* rs = G4RegionStore::GetInstance();
 	rs->clear();

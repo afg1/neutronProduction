@@ -1,0 +1,35 @@
+#
+# A basic macro to record neutron flux out of a tungstem box
+#
+
+# Create the scoring mesh
+
+# In this case, I matched the mesh to the size of the box (in World.cc) and set it to have only one bin
+/score/create/boxMesh mesh1
+/score/mesh/boxSize 100. 100. 100. mm
+/score/mesh/nBin 1 1 1
+
+# To get a handle for neutron production, I set a flux detector on the surface of the mesh
+/score/quantity/flatSurfaceFlux neutronFlux 2 False True percm2
+# the above parameters are <detector name> <outward only> <weighted> <normalize to area> <area unit>
+/score/filter/particle neutronFilter neutron
+# this line means we will only track neutrons
+/score/close
+# done with the scorer now
+
+/run/numberOfThreads 4      # change this line if you have more cores
+/run/initialize
+
+# set up the particle source - this is a very simple point source of monoenergetic protons
+/gps/particle proton
+/gps/pos/centre 0 0 0 mm
+/gps/direction 0 0 1
+/gps/ene/mono 2 GeV
+
+# Run some paticles!
+/run/beamOn 1000
+
+
+# dump the quantity desired from the mesh into the file
+/score/dumpQuantityToFile mesh1 neutronFlux neutronFlux.csv 
+# the arguments above are <mesh name> <quantity name> <file name>
